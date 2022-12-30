@@ -208,6 +208,8 @@ class FruitDataset(Dataset):
                                      labels = labels)
             image_resized = sample['image']
             target['boxes'] = torch.Tensor(sample['bboxes'])
+        else:
+            image_resized = torch.convert_to_tensor(image_resized)
             
         return image_resized, target
     def __len__(self):
@@ -230,6 +232,7 @@ valid_loader = DataLoader(
     num_workers=0,
     collate_fn=collate_fn
 )
+
 print(f"Number of training samples: {len(train_dataset)}")
 print(f"Number of validation samples: {len(valid_dataset)}\n")
 

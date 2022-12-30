@@ -7,12 +7,12 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import time
-import albumentations as A
+# import albumentations as A
 import glob as glob
 
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from tqdm.auto import tqdm
-from albumentations.pytorch import ToTensorV2
+# from albumentations.pytorch import ToTensorV2
 from xml.etree import ElementTree as et
 from torch.utils.data import Dataset, DataLoader
 
@@ -70,28 +70,28 @@ def collate_fn(batch):
     """
     return tuple(zip(*batch))
 
-# define the training tranforms
-def get_train_transform():
-    return A.Compose([
-        A.Flip(0.5),
-        A.RandomRotate90(0.5),
-        A.MotionBlur(p=0.2),
-        A.MedianBlur(blur_limit=3, p=0.1),
-        A.Blur(blur_limit=3, p=0.1),
-        ToTensorV2(p=1.0),
-    ], bbox_params={
-        'format': 'pascal_voc',
-        'label_fields': ['labels']
-    })
+# # define the training tranforms
+# def get_train_transform():
+#     return A.Compose([
+#         A.Flip(0.5),
+#         A.RandomRotate90(0.5),
+#         A.MotionBlur(p=0.2),
+#         A.MedianBlur(blur_limit=3, p=0.1),
+#         A.Blur(blur_limit=3, p=0.1),
+#         ToTensorV2(p=1.0),
+#     ], bbox_params={
+#         'format': 'pascal_voc',
+#         'label_fields': ['labels']
+#     })
 
-# define the validation transforms
-def get_valid_transform():
-    return A.Compose([
-        ToTensorV2(p=1.0),
-    ], bbox_params={
-        'format': 'pascal_voc', 
-        'label_fields': ['labels']
-    })
+# # define the validation transforms
+# def get_valid_transform():
+#     return A.Compose([
+#         ToTensorV2(p=1.0),
+#     ], bbox_params={
+#         'format': 'pascal_voc', 
+#         'label_fields': ['labels']
+#     })
 
 def show_tranformed_image(train_loader):
     """
@@ -212,8 +212,8 @@ class FruitDataset(Dataset):
         return len(self.all_images)
 
 # prepare the final datasets and data loaders
-train_dataset = FruitDataset(TRAIN_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_train_transform())
-valid_dataset = FruitDataset(VALID_DIR, RESIZE_TO, RESIZE_TO, CLASSES, get_valid_transform())
+train_dataset = FruitDataset(TRAIN_DIR, RESIZE_TO, RESIZE_TO, CLASSES, transforms=None)
+valid_dataset = FruitDataset(VALID_DIR, RESIZE_TO, RESIZE_TO, CLASSES, transforms=None)
 train_loader = DataLoader(
     train_dataset,
     batch_size=BATCH_SIZE,

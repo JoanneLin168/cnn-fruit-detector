@@ -306,6 +306,73 @@ def validate(valid_data_loader, model):
 
 ########## MAIN START ##########
 # directory where all the images are present
+model = create_model(NUM_CLASSES).to(DEVICE)
+params = [p for p in model.parameters() if p.requires_grad]
+# define the optimizer
+optimizer = torch.optim.SGD(params, lr=0.001, momentum=0.9, weight_decay=0.0005)
+# initialize the Averager class
+train_loss_hist = Averager()
+val_loss_hist = Averager()
+train_itr = 1
+val_itr = 1
+# train and validation loss lists to store loss values of all...
+# ... iterations till ena and plot graphs for all iterations
+train_loss_list = []
+val_loss_list = []
+# name to save the trained model with
+MODEL_NAME = 'model'
+# whether to show transformed images from data loader or not
+if VISUALIZE_TRANSFORMED_IMAGES:
+    from utils import show_tranformed_image
+    show_tranformed_image(train_loader)
+# start the training epochs
+for epoch in range(NUM_EPOCHS):
+    print(f"\nEPOCH {epoch+1} of {NUM_EPOCHS}")
+    # reset the training and validation loss histories for the current epoch
+    train_loss_hist.reset()
+    val_loss_hist.reset()
+    # create two subplots, one for each, training and validation
+    figure_1, train_ax = plt.subplots()
+    figure_2, valid_ax = plt.subplots()
+    # start timer and carry out training and validation
+    start = time.time()
+    train_loss = train(train_loader, model)
+    val_loss = validate(valid_loader, model)
+    print(f"Epoch #{epoch} train loss: {train_loss_hist.value:.3f}")   
+    print(f"Epoch #{epoch} validation loss: {val_loss_hist.value:.3f}")   
+    end = time.time()
+    print(f"Took {((end - start) / 60):.3f} minutes for epoch {epoch}")
+    if (epoch+1) % SAVE_MODEL_EPOCH == 0: # save model after every n epochs
+        torch.save(model.state_dict(), f"{OUT_DIR}/model{epoch+1}.pth")
+        print('SAVING MODEL COMPLETE...\n')
+    
+    if (epoch+1) % SAVE_PLOTS_EPOCH == 0: # save loss plots after n epochs
+        train_ax.plot(train_loss, color='blue')
+        train_ax.set_xlabel('iterations')
+        train_ax.set_ylabel('train loss')
+        valid_ax.plot(val_loss, color='red')
+        valid_ax.set_xlabel('iterations')
+        valid_ax.set_ylabel('validation loss')
+        figure_1.savefig(f"{OUT_DIR}/train_loss_{epoch+1}.png")
+        figure_2.savefig(f"{OUT_DIR}/valid_loss_{epoch+1}.png")
+        print('SAVING PLOTS COMPLETE...')
+    
+    if (epoch+1) == NUM_EPOCHS: # save loss plots and model once at the end
+        train_ax.plot(train_loss, color='blue')
+        train_ax.set_xlabel('iterations')
+        train_ax.set_ylabel('train loss')
+        valid_ax.plot(val_loss, color='red')
+        valid_ax.set_xlabel('iterations')
+        valid_ax.set_ylabel('validation loss')
+        figure_1.savefig(f"{OUT_DIR}/train_loss_{epoch+1}.png")
+        figure_2.savefig(f"{OUT_DIR}/valid_loss_{epoch+1}.png")
+        torch.save(model.state_dict(), f"{OUT_DIR}/model{epoch+1}.pth")
+    
+    plt.close('all')
+
+########## MAIN END ##########
+
+########## PREDICTION START ##########
 DIR_TEST = ROOT_DIR+'/test_data'
 test_images = glob.glob(f"{DIR_TEST}/*")
 print(f"Test instances: {len(test_images)}")

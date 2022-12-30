@@ -17,6 +17,7 @@ from xml.etree import ElementTree as et
 from torch.utils.data import Dataset, DataLoader
 
 ########## CONFIG START ##########
+print("Config starts...")
 BATCH_SIZE = 4 # increase / decrease according to GPU memory
 RESIZE_TO = 512 # resize the image for training and transforms
 NUM_EPOCHS = 20 # number of epochs to train for
@@ -37,6 +38,7 @@ VISUALIZE_TRANSFORMED_IMAGES = False
 OUT_DIR = ROOT_DIR+'/outputs'
 SAVE_PLOTS_EPOCH = 2 # save loss plots after these many epochs
 SAVE_MODEL_EPOCH = 2 # save model after these many epochs
+print("Config completed")
 
 ######### CONFIG END #########
 
@@ -306,6 +308,7 @@ def validate(valid_data_loader, model):
 
 ########## MAIN START ##########
 # directory where all the images are present
+print("Main program starts...")
 model = create_model(NUM_CLASSES).to(DEVICE)
 params = [p for p in model.parameters() if p.requires_grad]
 # define the optimizer
@@ -322,9 +325,9 @@ val_loss_list = []
 # name to save the trained model with
 MODEL_NAME = 'model'
 # whether to show transformed images from data loader or not
-if VISUALIZE_TRANSFORMED_IMAGES:
-    from utils import show_tranformed_image
-    show_tranformed_image(train_loader)
+# if VISUALIZE_TRANSFORMED_IMAGES:
+#     from utils import show_tranformed_image
+#     show_tranformed_image(train_loader)
 # start the training epochs
 for epoch in range(NUM_EPOCHS):
     print(f"\nEPOCH {epoch+1} of {NUM_EPOCHS}")

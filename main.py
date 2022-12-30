@@ -255,9 +255,9 @@ def train(train_data_loader, model):
     global train_loss_list
     
      # initialize tqdm progress bar
-    prog_bar = tqdm(train_data_loader, total=len(train_data_loader))
+    # prog_bar = tqdm(train_data_loader, total=len(train_data_loader))
     
-    for i, data in enumerate(prog_bar):
+    for i, data in enumerate(train_data_loader):
         optimizer.zero_grad()
         images, targets = data
         
@@ -273,7 +273,7 @@ def train(train_data_loader, model):
         train_itr += 1
     
         # update the loss value beside the progress bar for each iteration
-        prog_bar.set_description(desc=f"Loss: {loss_value:.4f}")
+        # prog_bar.set_description(desc=f"Loss: {loss_value:.4f}")
     return train_loss_list
 
 # function for running validation iterations
@@ -283,9 +283,9 @@ def validate(valid_data_loader, model):
     global val_loss_list
     
     # initialize tqdm progress bar
-    prog_bar = tqdm(valid_data_loader, total=len(valid_data_loader))
+    # prog_bar = tqdm(valid_data_loader, total=len(valid_data_loader))
     
-    for i, data in enumerate(prog_bar):
+    for i, data in enumerate(valid_data_loader):
         images, targets = data
         
         images = list(image.to(DEVICE) for image in images)
@@ -299,7 +299,7 @@ def validate(valid_data_loader, model):
         val_loss_hist.send(loss_value)
         val_itr += 1
         # update the loss value beside the progress bar for each iteration
-        prog_bar.set_description(desc=f"Loss: {loss_value:.4f}")
+        # prog_bar.set_description(desc=f"Loss: {loss_value:.4f}")
     return val_loss_list
 
 ########## TRAINING END ##########
@@ -419,7 +419,7 @@ for i in range(len(test_images)):
                         (int(box[0]), int(box[1]-5)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 
                         2, lineType=cv2.LINE_AA)
-        plt.imshow(orig_image)
+        # plt.imshow(orig_image)
         cv2.imwrite(ROOT_DIR+"/test_predictions/"+orig_image+".jpg")
     print(f"Image {i+1} done...")
     print('-'*50)

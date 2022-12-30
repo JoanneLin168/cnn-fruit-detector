@@ -209,7 +209,7 @@ class FruitDataset(Dataset):
             image_resized = sample['image']
             target['boxes'] = torch.Tensor(sample['bboxes'])
         else:
-            image_resized = torch.from_numpy(image_resized)
+            image_resized = torchvision.transforms.ToTensor()(image_resized)
             
         return image_resized, target
     def __len__(self):

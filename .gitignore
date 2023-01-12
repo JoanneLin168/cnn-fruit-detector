@@ -1,5 +1,7 @@
 # Ignore folders that have large files, and have zipped files
 data/
+outputs/
+outputs.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

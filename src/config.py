@@ -3,8 +3,9 @@ import os
 
 BATCH_SIZE = 4 # increase / decrease according to GPU memory
 RESIZE_TO = 512 # resize the image for training and transforms
-NUM_EPOCHS = 6 # number of epochs to train for
+NUM_EPOCHS = 4 # number of epochs to train for
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+SEPARATOR = os.path.sep
 # training/validation images and XML files directory
 TRAIN_DIR = '../data/train'
 VALID_DIR = '../data/test'
@@ -18,5 +19,5 @@ VISUALIZE_TRANSFORMED_IMAGES = False
 # location to save model and plots
 
 OUT_DIR = '../outputs'
-SAVE_PLOTS_EPOCH = 2 # save loss plots after these many epochs
-SAVE_MODEL_EPOCH = 2 # save model after these many epochs
+SAVE_PLOTS_EPOCH = 1 # save loss plots after these many epochs
+SAVE_MODEL_EPOCH = 1 # save model after these many epochs

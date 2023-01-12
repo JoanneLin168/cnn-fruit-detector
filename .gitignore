@@ -1,4 +1,4 @@
-# Test and Train dataset
+# Ignore folders that have large files, and have zipped files
 data/
 
 # Byte-compiled / optimized / DLL files

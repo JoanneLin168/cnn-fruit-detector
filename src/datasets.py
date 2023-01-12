@@ -8,6 +8,9 @@ from config import CLASSES, RESIZE_TO, TRAIN_DIR, VALID_DIR, BATCH_SIZE
 from torch.utils.data import Dataset, DataLoader
 from utils import collate_fn, get_train_transform, get_valid_transform
 
+# If Windows, use \ for directories
+SEPARATOR = '\\' if os.name == 'nt' else '/';
+
 # the dataset class
 class FruitDataset(Dataset):
     def __init__(self, dir_path, width, height, classes, transforms=None):
@@ -18,8 +21,8 @@ class FruitDataset(Dataset):
         self.classes = classes
         
         # get all the image paths in sorted order
-        self.image_paths = glob.glob(f"{self.dir_path}/*.jpg")
-        self.all_images = [image_path.split('/')[-1] for image_path in self.image_paths]
+        self.image_paths = glob.glob(f"{self.dir_path}{SEPARATOR}*.jpg")
+        self.all_images = [image_path.split(SEPARATOR)[-1] for image_path in self.image_paths]
         self.all_images = sorted(self.all_images)
 
     def __getitem__(self, idx):

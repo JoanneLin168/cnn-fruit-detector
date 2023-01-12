@@ -3,7 +3,7 @@ import os
 
 BATCH_SIZE = 4 # increase / decrease according to GPU memory
 RESIZE_TO = 512 # resize the image for training and transforms
-NUM_EPOCHS = 100 # number of epochs to train for
+NUM_EPOCHS = 6 # number of epochs to train for
 DEVICE = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 # training/validation images and XML files directory
 TRAIN_DIR = '../data/train'
